@@ -1,7 +1,5 @@
 package com.generation.blogPessoal.model;
-
 import java.time.LocalDateTime;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,29 +13,41 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity
-@Table (name = "Postagem")
+@Table (name = "tb_postagens")
 
 public class Postagem {
 
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
-		
 	private long id;
 	
-	@NotNull
-	@Size (min = 5, max = 100)
+	@NotNull (message="O título é obrigatório")
+	@Size (min = 5, max = 100, message = "O título deve conter no mínimo 05 e no máximo 100 caractéres")
 	private String titulo;
 	
-	@NotNull
-	@Size (min = 10, max = 500)
+	@NotNull(message="O texto é obrigatório")
+	@Size (min = 10, max = 500, message="O texto deve conter no mínimo 10 e no máximo 500 caractéres")
 	private String texto;
 	
 	@UpdateTimestamp
 	private LocalDateTime data;
 	
 	@ManyToOne
-	@JsonIgnoreProperties("")
+	@JsonIgnoreProperties("Postagem")
 	private Tema tema;
+	
+	@ManyToOne
+	@JsonIgnoreProperties("Postagem")
+	private Usuario usuario;
+	
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
 
 	public Tema getTema() {
 		return tema;
